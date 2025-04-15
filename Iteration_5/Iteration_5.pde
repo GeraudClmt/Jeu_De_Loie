@@ -6,13 +6,14 @@ int largeurcase = 14;
 int hauteur = 50;
 int count = 1;
 int[] coordCentre = new int[63];
+int countHotel = 0;
 
 void setup() {
   size(910, 200);
   frameRate(10);
   for (int i = 1; i < 64; i++ ) {
     if (i== 9 || i==18 || i==27 || i==36 || i==45 || i==54) {
-      fill (110,150,240);
+      fill (110, 150, 240);
     } else {
       fill (255, 255, 255);
     }
@@ -28,19 +29,23 @@ void draw () {
 void keyPressed() {
   //Lance la fonction lancé de dés si position n'est pas sur l'arrivée
   if (positionJoueur1 != 63) {
+
     lance();
   }
 }
 
 //Evenement pour lancé de dés
 void lance() {
+
   de1 = int(random(1, 7));
   de2 = int(random(1, 7));
   println("De1 : " + de1 + " De2 : " + de2);
   int avance = de1 + de2;
 
 
-  if (positionJoueur1 + avance == 63) {
+  if (positionJoueur1 == 19 && countHotel < 2) {
+    positionJoueur1 = 19;
+  } else if (positionJoueur1 + avance == 63) {
     positionJoueur1 = positionJoueur1 + avance;
     println("Terminé");
   } else if (positionJoueur1 + avance > 63) {
@@ -60,6 +65,7 @@ void lance() {
   text("Lancés : " + str(count), 25, 20);
   text(str(positionJoueur1), positionJoueur1*largeurcase, 60 );
   count++;
+  countHotel++;
 }
 
 
