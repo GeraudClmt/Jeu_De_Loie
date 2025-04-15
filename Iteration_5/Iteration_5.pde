@@ -1,7 +1,6 @@
 
 int de1 = int(random(1, 7));
 int de2 = int(random(1, 7));
-int positionJoueur1 = 0;
 int largeurcase = 14;
 int hauteur = 50;
 int count = 1;
@@ -10,23 +9,33 @@ int countHotel = 0;
 int prison = 0;
 int puits = 0;
 
+//Pour chaque joueur la premiere valeur correspond a sa position et la deuxieme 0 pour autoriser a bouger et 1 non
+int[] joueur1 = {0, 0, 0, 255, 12};
+int[] joueur2 = {0, 0, 0, 58, 255};
+int[] joueur3 = {0, 0, 255, 0, 197};
+int[] joueur4 = {0, 0, 255, 0, 0};
+
+int[] listeJoueurs = {joueur1[0], joueur2[0], joueur3[0], joueur4[0]};
+
 
 void setup() {
-  size(910, 200);
-  background(148,245,144);
+  size(896, 120);
+  background(148, 245, 144);
   //Carrés départ et arrivé
   fill(0, 138, 98);
   rect (0, 50, 14, 50);
   fill(236, 113, 134);
   rect (882, 50, 14, 50);
-  
+
   for (int i = 1; i < 63; i++ ) {
     if (i== 9 || i==18 || i==27 || i==36 || i==45 || i==54) {
       fill (110, 150, 240);
+    } else if (i == 31 || i == 19 || i == 42 || i == 52 || i ==58) {
+      fill(225, 38, 75);
     } else {
       fill (255, 255, 255);
     }
-    rect (i*largeurcase, 50, largeurcase, hauteur);
+    rect (i*largeurcase, 40, largeurcase, 60);
   }
 
   stockPosiDansTableau(coordCentre);
@@ -37,59 +46,86 @@ void draw () {
 
 void keyPressed() {
   //Lance la fonction lancé de dés si position n'est pas sur l'arrivée
-  if (positionJoueur1 != 63) {
+  if (key == 'a' && joueur1 [0]!= 63) {
+    lance(joueur1);
+  }
+  if (key == 'p' && joueur2 [0]!= 63) {
 
-    lance();
+    lance(joueur2);
+  }
+  if (key == 'w' && joueur3 [0]!= 63) {
+
+    lance(joueur3);
+  }
+  if (key == 'n' && joueur4 [0]!= 63) {
+
+    lance(joueur4);
   }
 }
 
 //Evenement pour lancé de dés
-void lance() {
+void lance(int[] joueur) {
 
   de1 = int(random(1, 7));
   de2 = int(random(1, 7));
+  fill(148, 245, 144);
+  rect(0, 13, 50, 25);
+  fill(0);
+  text(de1 + " et " + de2, 10, 30);
   println("De1 : " + de1 + " De2 : " + de2);
-  int avance = de1 + de2;
+  int avance = 5;
 
-  if (positionJoueur1 >0) {
+  //Re met la case en blanc
+  if (joueur[0] >0) {
     fill (255, 255, 255);
-
-    rect (positionJoueur1*largeurcase, 50, largeurcase, hauteur);
+    rect (joueur[0] *largeurcase, 50, largeurcase, 50);
+  }
+  
+  //Veriffication si la casse d'arrivé est prise
+  int casePrise = verifSurCase(joueur[0] + avance);
+  if (casePrise != 100) {
+    if(casePrise == 0){
+      joueur1[0] = joueur[0];
+    }else if(casePrise == 1){
+      joueur2[0] = joueur[0];
+    }else if(casePrise == 2){
+      joueur3[0] = joueur[0];
+    }else if(casePrise == 3){
+      joueur4[0] = joueur[0];
+    }
   }
 
-  if (positionJoueur1 == 19 && countHotel < 2) {
-    positionJoueur1 = 19;
-  } else if (positionJoueur1 == 52 && prison < 1) {
+  if (joueur[0]  == 19 && countHotel < 2) {
+    joueur[0]  = 19;
+  } else if (joueur[0]  == 52 && prison < 1) {
     println("prison");
     prison++;
     while (prison < 1) {
-      positionJoueur1 = 52;
+      joueur[0]  = 52;
     }
-  } else if (positionJoueur1 + avance == 31) {
+  } else if (joueur[0]  + avance == 31) {
     println("puits");
     puits++;
     while (puits < 1) {
-      positionJoueur1 = 31 ;
+      joueur[0]  = 31 ;
     }
-  } else if (positionJoueur1 + avance == 63) {
-    positionJoueur1 = positionJoueur1 + avance;
+  } else if (joueur[0]  + avance == 63) {
+    joueur[0]  = joueur[0]  + avance;
     println("Terminé");
-  } else if (positionJoueur1 + avance > 63) {
-    positionJoueur1 = positionJoueur1 - ((positionJoueur1 + avance) - 63) ;
-    println("Retour en case : " + positionJoueur1);
+  } else if (joueur[0]  + avance > 63) {
+    joueur[0]  = joueur[0]  - ((joueur[0]  + avance) - 63) ;
+    println("Retour en case : " + joueur[0] );
   } else {
-    positionJoueur1 = positionJoueur1 + avance;
+    joueur[0]  = joueur[0]  + avance;
   }
-  positionJoueur1 = caseSpeciale(positionJoueur1, avance);
-  println("Position joueur 1 : " + positionJoueur1);
-  pion(positionJoueur1 * largeurcase);
+  //Définit la posi du joueur
+  joueur[0]  = caseSpeciale(joueur[0], avance);
+  println("Position joueur 1 : " + joueur[0] );
+  pion(joueur[0]  * largeurcase, color(joueur[2], joueur[3], joueur[4]));
 
   //Affiche carré + score
-  fill(255, 255, 255);
-  rect (15, 10, 80, 15);
   fill(0, 0, 0);
-  text("Lancés : " + str(count), 25, 20);
-  text(str(positionJoueur1), positionJoueur1*largeurcase, 60 );
+  text(str(joueur[0] ), joueur[0] *largeurcase, 60 );
   count++;
   countHotel++;
 }
@@ -106,9 +142,9 @@ void stockPosiDansTableau(int[] tableau) {
 }
 
 //Affiche un pion en fonction d'une position
-void pion(int positionX) {
-  fill(0, 0, 0);
-  ellipse (positionX + (largeurcase / 2), 75, 6, 6);
+void pion(int positionX, color coulleur) {
+  fill(coulleur);
+  ellipse (positionX + (largeurcase / 2), 75, 10, 10);
 }
 
 int caseSpeciale(int cases, int jet) {
@@ -145,4 +181,19 @@ int caseSpeciale(int cases, int jet) {
   }
 
   return cases;
+}
+
+int verifSurCase(int posi) {
+  //init des postions de la liste
+  listeJoueurs[0] = joueur1[0];
+  listeJoueurs[1] = joueur2[0];
+  listeJoueurs[2] = joueur3[0];
+  listeJoueurs[3] = joueur4[0];
+
+  for (int i = 0; i < listeJoueurs.length; i++) {
+    if (posi == listeJoueurs[i]) {
+      return i;
+    }
+  }
+  return 100;
 }
