@@ -7,11 +7,20 @@ int hauteur = 50;
 int count = 1;
 int[] coordCentre = new int[63];
 int countHotel = 0;
+int prison = 0;
+int puits = 0;
+
 
 void setup() {
   size(910, 200);
-  frameRate(10);
-  for (int i = 1; i < 64; i++ ) {
+  background(148,245,144);
+  //Carrés départ et arrivé
+  fill(0, 138, 98);
+  rect (0, 50, 14, 50);
+  fill(236, 113, 134);
+  rect (882, 50, 14, 50);
+  
+  for (int i = 1; i < 63; i++ ) {
     if (i== 9 || i==18 || i==27 || i==36 || i==45 || i==54) {
       fill (110, 150, 240);
     } else {
@@ -42,9 +51,26 @@ void lance() {
   println("De1 : " + de1 + " De2 : " + de2);
   int avance = de1 + de2;
 
+  if (positionJoueur1 >0) {
+    fill (255, 255, 255);
+
+    rect (positionJoueur1*largeurcase, 50, largeurcase, hauteur);
+  }
 
   if (positionJoueur1 == 19 && countHotel < 2) {
     positionJoueur1 = 19;
+  } else if (positionJoueur1 == 52 && prison < 1) {
+    println("prison");
+    prison++;
+    while (prison < 1) {
+      positionJoueur1 = 52;
+    }
+  } else if (positionJoueur1 + avance == 31) {
+    println("puits");
+    puits++;
+    while (puits < 1) {
+      positionJoueur1 = 31 ;
+    }
   } else if (positionJoueur1 + avance == 63) {
     positionJoueur1 = positionJoueur1 + avance;
     println("Terminé");
@@ -117,5 +143,6 @@ int caseSpeciale(int cases, int jet) {
     println("Cases : " + 58);
     return 0;
   }
+
   return cases;
 }
