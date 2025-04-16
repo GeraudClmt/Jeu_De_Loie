@@ -27,21 +27,17 @@ void setup() {
   fill(236, 113, 134);
   rect (882, 50, 14, 50);
 
-  for (int i = 1; i < 63; i++ ) {
-    if (i== 9 || i==18 || i==27 || i==36 || i==45 || i==54) {
-      fill (110, 150, 240);
-    } else if (i == 31 || i == 19 || i == 42 || i == 52 || i ==58) {
-      fill(225, 38, 75);
-    } else {
-      fill (255, 255, 255);
-    }
-    rect (i*largeurcase, 40, largeurcase, 60);
-  }
 
+  creationDuPlateau();
   stockPosiDansTableau(coordCentre);
 }
 
 void draw () {
+  creationDuPlateau();
+  pion(joueur1[0], color(joueur1[2], joueur1[3], joueur1[4]));
+  pion(joueur2[0], color(joueur2[2], joueur2[3], joueur2[4]));
+  pion(joueur3[0], color(joueur3[2], joueur3[3], joueur3[4]));
+  pion(joueur4[0], color(joueur4[2], joueur4[3], joueur4[4]));
 }
 
 void keyPressed() {
@@ -63,6 +59,19 @@ void keyPressed() {
   }
 }
 
+void creationDuPlateau() {
+  for (int i = 1; i < 63; i++ ) {
+    if (i== 9 || i==18 || i==27 || i==36 || i==45 || i==54) {
+      fill (110, 150, 240);
+    } else if (i == 31 || i == 19 || i == 42 || i == 52 || i ==58) {
+      fill(225, 38, 75);
+    } else {
+      fill (255, 255, 255);
+    }
+    rect (i*largeurcase, 40, largeurcase, 60);
+  }
+}
+
 //Evenement pour lancé de dés
 void lance(int[] joueur) {
 
@@ -80,17 +89,17 @@ void lance(int[] joueur) {
     fill (255, 255, 255);
     rect (joueur[0] *largeurcase, 50, largeurcase, 50);
   }
-  
+
   //Veriffication si la casse d'arrivé est prise
   int casePrise = verifSurCase(joueur[0] + avance);
   if (casePrise != 100) {
-    if(casePrise == 0){
+    if (casePrise == 0) {
       joueur1[0] = joueur[0];
-    }else if(casePrise == 1){
+    } else if (casePrise == 1) {
       joueur2[0] = joueur[0];
-    }else if(casePrise == 2){
+    } else if (casePrise == 2) {
       joueur3[0] = joueur[0];
-    }else if(casePrise == 3){
+    } else if (casePrise == 3) {
       joueur4[0] = joueur[0];
     }
   }
@@ -121,7 +130,7 @@ void lance(int[] joueur) {
   //Définit la posi du joueur
   joueur[0]  = caseSpeciale(joueur[0], avance);
   println("Position joueur 1 : " + joueur[0] );
-  pion(joueur[0]  * largeurcase, color(joueur[2], joueur[3], joueur[4]));
+  //pion(joueur[0]  * largeurcase, color(joueur[2], joueur[3], joueur[4]));
 
   //Affiche carré + score
   fill(0, 0, 0);
@@ -144,7 +153,7 @@ void stockPosiDansTableau(int[] tableau) {
 //Affiche un pion en fonction d'une position
 void pion(int positionX, color coulleur) {
   fill(coulleur);
-  ellipse (positionX + (largeurcase / 2), 75, 10, 10);
+  ellipse (positionX * largeurcase + (largeurcase /2), 75, 10, 10);
 }
 
 int caseSpeciale(int cases, int jet) {
