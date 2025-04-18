@@ -29,13 +29,8 @@ float d3 = 0;
 float d4 = 0;
 
 void setup() {
-  size(1792, 120);
+  size(1792, 500);
   background(148, 245, 144);
-  //Carrés départ et arrivé
-  fill(0, 138, 98);
-  rect (0, 50, largeurcase, 50);
-  fill(236, 113, 134);
-  rect (1764, 50, largeurcase, 50);
 
 
   creationDuPlateau();
@@ -43,35 +38,38 @@ void setup() {
 }
 
 void draw () {
-
+   fill(0, 138, 98);
+  rect (0, 50, largeurcase, hauteur);
+  fill(236, 113, 134);
+  rect (1764, 50, largeurcase, hauteur);
   creationDuPlateau();
-  
+
   //Fait apparaitre les joueurs avec leurs annimations
   pion(d1, color(joueur1[2], joueur1[3], joueur1[4]));
-  if(d1 >= joueur1[0]){
+  if (d1 >= joueur1[0]) {
     d1 = joueur1[0];
-  }else{
+  } else {
     d1 = d1 + 0.3;
   }
-  
+
   pion(d2, color(joueur2[2], joueur2[3], joueur2[4]));
-  if(d2 >= joueur2[0]){
+  if (d2 >= joueur2[0]) {
     d2 = joueur2[0];
-  }else{
+  } else {
     d2 = d2 + 0.3;
   }
-  
+
   pion(d3, color(joueur3[2], joueur3[3], joueur3[4]));
-  if(d3 >= joueur3[0]){
+  if (d3 >= joueur3[0]) {
     d3 = joueur3[0];
-  }else{
+  } else {
     d3 = d3 + 0.3;
   }
-  
+
   pion(d4, color(joueur4[2], joueur4[3], joueur4[4]));
-  if(d4 >= joueur4[0]){
+  if (d4 >= joueur4[0]) {
     d4 = joueur4[0];
-  }else{
+  } else {
     d4 = d4 + 0.3;
   }
 }
@@ -98,11 +96,6 @@ void keyPressed() {
   if (key == ENTER) {
     creationDuPlateau();
     background(148, 245, 144);
-    //Carrés départ et arrivé
-    fill(0, 138, 98);
-    rect (0, 50, largeurcase, 50);
-    fill(236, 113, 134);
-    rect (1764, 50, largeurcase, 50);
     joueur1[0] = 0;
     joueur2[0] = 0;
     joueur3[0] = 0;
@@ -120,12 +113,12 @@ void creationDuPlateau() {
     } else {
       fill (255, 255, 255);
     }
-
     rect (i*largeurcase, 40, largeurcase, 60);
     fill(0);
-    text(str(i), i*largeurcase, 50);
+    text(str(i), i*largeurcase, 40 +10);
   }
 }
+
 
 //Evenement pour lancé de dés
 void lance(int[] joueur) {
